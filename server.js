@@ -9,7 +9,7 @@ connectDB(); //after adding db.js
 app.use(express.json({ extended: false}));
 
 //get request and send message to browser
-//app.get('/', (req, res) => res.send('API Running'));
+app.get('/', (req, res) => res.send('API Running'));
 
 //Define Routes
 app.use('/api/users', require('./routes/api/users'));
@@ -18,7 +18,6 @@ app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/profile', require('./routes/api/profile'));
 app.use('/api/post', require('./routes/api/post'));
-
 
 
 //look for environment 
