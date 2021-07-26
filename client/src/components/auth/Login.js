@@ -15,11 +15,13 @@ const Login = ({ login, isAuthenticated }) => {
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+
   const onSubmit = e => {
     e.preventDefault();
     login(email, password);
   };
 
+  //redirect if logged in
   if (isAuthenticated) {
     return <Redirect to="/dashboard" />;
   }
@@ -65,6 +67,8 @@ Login.propTypes = {
   isAuthenticated: PropTypes.bool
 };
 
+//direct to login after logging in
+//isAuthenticated = false --> true
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated
 });
