@@ -19,7 +19,6 @@ const initialState = {
     user: null
 }
 
-
 export default function functionName(state = initialState, action){
     const { type, payload } = action;
 

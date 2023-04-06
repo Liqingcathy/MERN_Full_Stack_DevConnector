@@ -160,5 +160,4 @@ CreateProfile.propTypes = {
     createProfile: PropTypes.func.isRequired
 };
 
-
 export default connect(null, { createProfile })(withRouter(CreateProfile));

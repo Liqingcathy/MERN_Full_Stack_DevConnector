@@ -45,7 +45,7 @@ router.post(
         if(!errors.isEmpty()){
             return res.status(400).json({errors: errors.array()});
         }
-         //pull all fields out from Profile.js
+//pull all fields out from Profile.js
    const {
     company,
     website,
@@ -86,7 +86,6 @@ router.post(
        //look for profile after creating
        let profile = await Profile.findOne({user: req.user.id});
        if(profile){
-           //if found one profile then update
            profile = await Profile.findOneAndUpdate(
                { user: req.user.id },
                { $set: profileFields },
@@ -94,8 +93,6 @@ router.post(
                );
                return res.json(profile);
         }
-
-        //if not found, create a new profile, save and send out to profile
         profile = new Profile(profileFields);
         await profile.save();
         res.json(profile);
@@ -143,9 +140,6 @@ router.get('/user/:user_id', async (req, res) => {
 // @access Private
 router.delete('/', auth, async (req, res) => {
     try {
-        //@todo- remove users posts
-
-        //Remove profile
         await Profile.findOneAndRemove({user: req.user.id});
         await User.findOneAndRemove({_id: req.user.id});
         res.json({msg: 'user removed'});
@@ -203,10 +197,7 @@ router.put('/experience',
 // @access Private
 router.delete('/experience/:exp_id', auth, async (req, res) => {
     try {
-        //get profile by user id
         const profile = await Profile.findOne({user: req.user.id});
-
-        //get remove index
         const removeIndex = profile.experience.map(item => item.id).indexOf(req.params.exp_id);
         profile.experience.splice(removeIndex, 1);
         await profile.save();
@@ -239,10 +230,8 @@ router.put('/education',
 
         } =req.body;
 
-        //create object
         const newEdu = {
             school, degree, fieldofstudy, from,to, current, description
-
         }
 
         try {
@@ -297,6 +286,4 @@ router.get('/github/:username', async (req, res) => {
     }
 });
 
-
-//export route
 module.exports = router;

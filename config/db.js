@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const config = require('config');
-const db = config.get('mongoURI'); //from config file get database url 
+const db = config.get('mongoURI'); 
 
-//connect to db function
 const connectDB = async () => {
     try {
         await mongoose.connect(db, {
@@ -16,7 +15,6 @@ const connectDB = async () => {
         console.log('MongoDB Connected')
     } catch (err) {
         console.log(err.message);
-        //exit process with failure
         process.exit(1);
     }
 }

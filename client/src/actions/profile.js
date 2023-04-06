@@ -6,12 +6,9 @@ import {
     PROFILE_ERROR
 } from './types';
 
-
-//Get current users profile
 export const getCurrentProfile = () => async dispatch => {
     try {
         const res = await axios.get('/api/profile/me'); 
-
         dispatch({ 
             type: GET_PROFILE,
             payload: res.data
@@ -24,7 +21,6 @@ export const getCurrentProfile = () => async dispatch => {
     }
 }
 
-//Create or update a profile
 export const createProfile = (FormData, history, edit = false) => 
 async (dispatch) => {
     try {
@@ -42,7 +38,6 @@ async (dispatch) => {
 
         dispatch(setAlert( edit ? 'Profile Updated' : 'Profile Created', 'success'));
         
-        //push to history object
         if(!edit){
             history.push('/dashboard');
         }
@@ -52,7 +47,6 @@ async (dispatch) => {
             errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
         }
 
-
         dispatch({
             type: PROFILE_ERROR,
             payload: { msg: err.response.statusText, status: err.response.status}
@@ -60,7 +54,6 @@ async (dispatch) => {
     }
 }
 
-//add experience
 export const addExperience = (formData, history) => async dispatch => {
     try {
         const config = {
@@ -75,18 +68,14 @@ export const addExperience = (formData, history) => async dispatch => {
             payload: res.data
         });
 
-        dispatch(setAlert( 'Experience Added',  'success'));
-        
-        //push to history object
-    
-            history.push('/dashboard');
+        dispatch(setAlert( 'Experience Added',  'success'));    
+        history.push('/dashboard');
         
     } catch (err) {
         const errors  =err.response.data.errors;
         if(errors) {
             errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
         }
-
 
         dispatch({
             type: PROFILE_ERROR,
@@ -95,8 +84,6 @@ export const addExperience = (formData, history) => async dispatch => {
     }
 }
 
-
-//add education
 export const addEducation = (formData, history) => async (dispatch) => {
     try {
         const config = {
@@ -111,18 +98,14 @@ export const addEducation = (formData, history) => async (dispatch) => {
             payload: res.data
         });
 
-        dispatch(setAlert( 'Education Added',  'success'));
-        
-        //push to history object
-    
-            history.push('/dashboard');
+        dispatch(setAlert( 'Education Added',  'success'));    
+        history.push('/dashboard');
         
     } catch (err) {
         const errors  =err.response.data.errors;
         if(errors) {
             errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
         }
-
 
         dispatch({
             type: PROFILE_ERROR,

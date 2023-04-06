@@ -15,7 +15,7 @@ const Dashboard = ({
     }, []);
 
 
-    return loading && profile === null ? (<Spinner />) :(
+    return loading && profile === null ? (<Spinner />) : (
     <Fragment>
         <h1 className="large text-primary">Dashboard</h1>
         <p className="lead">
@@ -43,7 +43,5 @@ const mapStateToProps = state => ({
     auth: state.auth,
     profile: state.profile
 });
-
-
 
 export default connect(mapStateToProps, { getCurrentProfile })(Dashboard);

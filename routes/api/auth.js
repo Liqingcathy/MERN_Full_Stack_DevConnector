@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const auth = require('../../middleware/auth'); //use middleware
+const auth = require('../../middleware/auth');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 //check post input data error 
-const { check, validationResult } = require('express-validator/check');
+const { check, validationResult } = require('express-validator');
 
 const User = require('../../models/User');
 
@@ -20,7 +20,6 @@ router.get('/', auth, async (req, res) => {
         console.error(err.message);
         res.status(500).send('Server Error');
     }
-    //res.send('Auth route')
 }); //add auth param to use middle ware
 
 // @route POST api/auth
@@ -33,32 +32,24 @@ router.post('/',
     check('password', 'Please enter a password'
     ).exists()
 ], 
-  async  (req, res) => { //get promise
-    const errors = validationResult(req); //receive req
-    //check error
+  async  (req, res) => { 
+    const errors = validationResult(req); 
     if(!errors.isEmpty()){
-        //if there's error, send json data back in an array
-        //400 means bad request
         return res.status(400).json({errors: errors.array()});
     }
-
-    //pull out some from body
     const {email, password} = req.body;
 
     try{
-     //see if user exists
     let user = await User.findOne({email});
-    if(!user){ //if not user
+    if(!user){ 
        return res.status(400).json({errors: [{msg: 'Invalid Credentials'}]});//match error message in line 24
     }    
 
-    //if password match
-    const isMatch = await bcrypt.compare(password, user.password); //plain tex pw and user pw
+    const isMatch = await bcrypt.compare(password, user.password);
     if(!isMatch){
         return res.status(400).json({errors: [{msg: 'Invalid Credentials'}]});
     }
 
-    //return jsonwebtoken
     const payload = {
         user: {
             id: user.id
@@ -78,12 +69,7 @@ router.post('/',
     }catch(err){
         console.error(err.message);
         res.status(500).send('Server error');
-    }
-    
-    //console.log(req.body); //object of data the route sent
-    //initialize middleware for body parser --> server.js
-    
+    }    
 });
 
-//export route
 module.exports = router;

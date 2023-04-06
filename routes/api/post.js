@@ -49,7 +49,6 @@ router.get('/', auth, async (req, res) => {
 // @access Private (user sign up and see post)
 router.get('/:id', auth, async (req, res) => {
     try {
-        //get most recent post first
         const post = await Post.findById(req.params.id);
         if(!post){
             return res.status(404).json({msg: 'Post not found'});
@@ -70,7 +69,6 @@ router.get('/:id', auth, async (req, res) => {
 // @access Private 
 router.delete('/:id', auth, async (req, res) => {
     try {
-        //get most recent post first
         const post = await Post.findById(req.params.id);
         if(!post){
             return res.status(404).json({msg: 'Post not found'});
@@ -119,11 +117,9 @@ router.put('/unlike/:id', auth, async(req, res) => {
     try {
         const post = await Post.findById(req.params.id);
 
-        //check if the post has  already been liked
         if(post.likes.filter(like => like.user.toString() === req.user.id).length === 0){
             return res.status(400).json({msg: 'post has not been liked'});
         }
-        //Get remove index
         const removeIndex = post.likes.map(like => like.user.toString()).indexOf(req.user.id);
         post.likes.splice(removeIndex, 1);
         
@@ -166,21 +162,17 @@ try {
 // @route DELETE api/post/comment/:id/:comment_id
 // @desc DELETE comment 
 // @access Private
-
 router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
     try {
         
         const post = await Post.findById(req.params.id);
         
-        //pull out comment 
         const comment = post.comments.find(comment => comment.id === req.params.comment_id);
         
-        //Check comment exist
         if(!comment){
             return res.status(404).json({msg: 'No comment for this post yet'});
         }
 
-        //Check user id matches not
         if(comment.user.toString() !== req.user.id){
             return res.status(401).json({msg: 'User not authorized'});
 
@@ -197,6 +189,4 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
     }
 });
 
-
- //export route
 module.exports = router;
